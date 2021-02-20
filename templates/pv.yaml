@@ -1,0 +1,153 @@
+# kubectl create -f ./pv.yaml -n docs
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-fonts-pv
+  labels:
+    app.kubernetes.io/name: {{ include "app-docs.name" . }}
+    helm.sh/chart: {{ include "app-docs.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ include "app-docs.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.config.storage.fonts.size }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: docs-templates-sc
+  local:
+    path: {{ .Values.config.storage.fonts.path }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              {{- with .Values.affinity }}
+              values:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-templates-pv
+  labels:
+    app.kubernetes.io/name: {{ include "app-docs.name" . }}
+    helm.sh/chart: {{ include "app-docs.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ include "app-docs.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.config.storage.templates.size }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: docs-templates-sc
+  local:
+    path: {{ .Values.config.storage.templates.path }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              {{- with .Values.affinity }}
+              values:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-documentstructures-pv
+  labels:
+    app.kubernetes.io/name: {{ include "app-docs.name" . }}
+    helm.sh/chart: {{ include "app-docs.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ include "app-docs.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.config.storage.docStructures.size }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: docs-templates-sc
+  local:
+    path: {{ .Values.config.storage.docStructures.path }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              {{- with .Values.affinity }}
+              values:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-generated-documents-pv
+  labels:
+    app.kubernetes.io/name: {{ include "app-docs.name" . }}
+    helm.sh/chart: {{ include "app-docs.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ include "app-docs.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.config.storage.results.size }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: docs-results-sc
+  local:
+    path: {{ .Values.config.storage.results.path }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              {{- with .Values.affinity }}
+              values:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: docs-templates-sc
+  labels:
+    app.kubernetes.io/name: {{ include "app-docs.name" . }}
+    helm.sh/chart: {{ include "app-docs.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ include "app-docs.name" . }}
+  namespace: {{ .Release.Namespace }}
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: docs-results-sc
+  labels:
+    app.kubernetes.io/name: {{ include "app-docs.name" . }}
+    helm.sh/chart: {{ include "app-docs.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ include "app-docs.name" . }}
+  namespace: {{ .Release.Namespace }}
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+

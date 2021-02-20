@@ -1,0 +1,25 @@
+# Default values for getthedocs repositories.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: [ docker-desktop ]
+
+config:
+  storage:
+    fonts:
+      path: /mnt/data/sample-app/repositories/source/fonts
+      size: 100Mi
+    docStructures:
+      path: /mnt/data/sample-app/repositories/source/documentstructures
+      size: 100Mi
+    templates:
+      path: /mnt/data/sample-app/repositories/source/templates
+      size: 100Mi
+    results:
+      path: /mnt/data/sample-app/repositories/target/generated-documents
+      size: 50Gi
+      

@@ -1,0 +1,14 @@
+Thank you for installing {{ .Chart.Name }}.
+Your release is named {{ .Release.Name }}.
+
+This is a mock environment with sample hostpath based persistent volumes
+for the getthedocs template engine.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get {{ .Release.Name }}
+
+Remove this release from your cluster using this command:
+
+  $ helm delete {{ .Release.Name }}
